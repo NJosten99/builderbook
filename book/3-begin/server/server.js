@@ -6,12 +6,12 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoSessionStore = require('connect-mongo');
 
-const User = require('./models/User');
-
 require('dotenv').config();
 
 const dev = process.env.NODE_ENV !== 'production';
 const MONGO_URL = process.env.MONGO_URL_TEST;
+
+const setupGoogle = require('./google');
 
 const options = {
   useNewUrlParser: true,
@@ -53,12 +53,7 @@ app.prepare().then(() => {
 
   server.use(session(sess));
 
-  // this is test code, it will be removed by the end of Chapter 3
-  server.get('/', async (req, res) => {
-    req.session.foo = 'bar';
-    const user = await User.findOne({ slug: 'team-builder-book' });
-    app.render(req, res, '/', { user });
-  });
+  setupGoogle({ server, ROOT_URL });
 
   server.get('*', (req, res) => handle(req, res));
 
