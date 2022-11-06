@@ -67,11 +67,7 @@ function setupGoogle({ server, ROOT_URL }) {
       failureRedirect: '/login',
     }),
     (req, res) => {
-      if (req.user && req.user.isAdmin) {
-        res.redirect('/admin');
-      } else {
-        res.redirect('/my-books');
-      }
+      res.redirect('/admin');
     },
   );
 
