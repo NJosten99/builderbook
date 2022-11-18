@@ -4,26 +4,6 @@ const styleBigAvatar = {
   margin: '0px auto 15px',
 };
 
-const styleRaisedButton = {
-  font: '16px',
-};
-
-const styleToolbar = {
-  background: '#FFF',
-  height: '64px',
-  paddingRight: '20px',
-};
-
-const styleLoginButton = {
-  borderRadius: '2px',
-  textTransform: 'none',
-  font: '16px',
-  fontWeight: '400',
-  letterSpacing: '0.01em',
-  color: 'white',
-  backgroundColor: '#DF4930',
-};
-
 const styleTextField = {
   font: '15px',
   color: '#222',
@@ -45,9 +25,6 @@ const styleGrid = {
 
 module.exports = {
   styleBigAvatar,
-  styleRaisedButton,
-  styleToolbar,
-  styleLoginButton,
   styleTextField,
   styleForm,
   styleGrid,
