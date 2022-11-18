@@ -10,12 +10,12 @@ import Link from 'next/link';
 
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
-import Header from '../../components/Header';
-import BuyButton from '../../components/customer/BuyButton';
+import Header from '../components/Header';
+import BuyButton from '../components/customer/BuyButton';
 
-import { getChapterDetailApiMethod } from '../../lib/api/public';
-import withAuth from '../../lib/withAuth';
-import notify from '../../lib/notify';
+import { getChapterDetailApiMethod } from '../lib/api/public';
+import withAuth from '../lib/withAuth';
+import notify from '../lib/notify';
 
 const styleIcon = {
   opacity: '0.75',

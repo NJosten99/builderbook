@@ -2,6 +2,8 @@ const passport = require('passport');
 const Strategy = require('passport-google-oauth').OAuth2Strategy;
 const User = require('./models/User');
 
+const logger = require('./logger');
+
 function setupGoogle({ server, ROOT_URL }) {
   const verify = async (accessToken, refreshToken, profile, verified) => {
     let email;
@@ -26,7 +28,7 @@ function setupGoogle({ server, ROOT_URL }) {
       verified(null, user);
     } catch (err) {
       verified(err);
-      console.log(err); // eslint-disable-line
+      logger.debug(err); // eslint-disable-line
     }
   };
   passport.use(
@@ -49,7 +51,7 @@ function setupGoogle({ server, ROOT_URL }) {
     User.findById(id, User.publicFields(), (err, user) => {
       done(err, user);
       // eslint-disable-next-line no-console
-      // console.log('deserializeUser', id);
+      // logger.debug('deserializeUser', id);
     });
   });
 
@@ -62,7 +64,7 @@ function setupGoogle({ server, ROOT_URL }) {
       prompt: 'select_account',
     };
     // eslint-disable-next-line
-      console.log(`req.query.redirectUrl:${req.query.redirectUrl}`);
+      logger.debug(`req.query.redirectUrl:${req.query.redirectUrl}`);
 
     if (req.query && req.query.redirectUrl && req.query.redirectUrl.startsWith('/')) {
       req.session.finalUrl = req.query.redirectUrl;
@@ -80,7 +82,7 @@ function setupGoogle({ server, ROOT_URL }) {
     }),
     (req, res) => {
       // eslint-disable-next-line
-      console.log(`req.session.finalUrl:${req.session.finalUrl}`);
+      logger.debug(`req.session.finalUrl:${req.session.finalUrl}`);
 
       if (req.user && req.user.isAdmin) {
         res.redirect('/admin');

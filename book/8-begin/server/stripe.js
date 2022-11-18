@@ -1,19 +1,16 @@
 const Stripe = require('stripe');
 const lodash = require('lodash');
 
-const getRootUrl = require('../lib/api/getRootUrl');
-
 const Book = require('./models/Book');
 const User = require('./models/User');
 
 const dev = process.env.NODE_ENV !== 'production';
 const API_KEY = dev ? process.env.STRIPE_TEST_SECRETKEY : process.env.STRIPE_LIVE_SECRETKEY;
 
-const ROOT_URL = getRootUrl();
+const port = process.env.PORT || 8000;
+const ROOT_URL = `http://localhost:${port}`;
 
 const stripeInstance = new Stripe(API_KEY, { apiVersion: '2020-03-02' });
-
-const logger = require('./logger');
 
 function getBookPriceId(bookSlug) {
   let priceId;
@@ -34,8 +31,7 @@ function getBookPriceId(bookSlug) {
 }
 
 function createSession({ userId, bookId, bookSlug, userEmail, redirectUrl }) {
-  // logger.debug(`redirectUrl at createSession: ${redirectUrl}`);
-  logger.debug(userId, bookId, bookSlug, userEmail, redirectUrl);
+  console.log(userId, bookId, bookSlug, userEmail, redirectUrl);
   return stripeInstance.checkout.sessions.create({
     customer_email: userEmail,
     payment_method_types: ['card'],
@@ -74,11 +70,11 @@ function stripeCheckoutCallback({ server }) {
         '_id email purchasedBookIds freeBookIds',
       ).lean();
 
-      logger.debug(user);
+      console.log(user);
 
       const book = await Book.findOne({ _id: session.metadata.bookId }, 'name slug price').lean();
 
-      logger.debug(book);
+      console.log(book);
 
       if (!user) {
         throw new Error('User not found.');

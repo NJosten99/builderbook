@@ -53,6 +53,7 @@ class MyDocument extends Document {
   };
 
   render() {
+    // console.log('MyDocument.render');
     return (
       <Html lang="en" style={{ height: '100%' }}>
         <Head>
@@ -69,7 +70,6 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400:latin"
           />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <link
             rel="stylesheet"
             href="https://storage.googleapis.com/builderbook/nprogress.min.css"

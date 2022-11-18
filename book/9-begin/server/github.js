@@ -5,11 +5,14 @@ const _ = require('lodash');
 
 const User = require('./models/User');
 
+const logger = require('./logger');
+
 require('dotenv').config();
 
 const dev = process.env.NODE_ENV !== 'production';
 const CLIENT_ID = dev ? process.env.GITHUB_TEST_CLIENTID : process.env.GITHUB_LIVE_CLIENTID;
 const API_KEY = dev ? process.env.GITHUB_TEST_SECRETKEY : process.env.GITHUB_LIVE_SECRETKEY;
+logger.debug(API_KEY);
 
 function setupGithub({ server, ROOT_URL }) {
   const verify = async ({ user, accessToken, profile }) => {
@@ -41,7 +44,7 @@ function setupGithub({ server, ROOT_URL }) {
       clientId: CLIENT_ID,
       redirectUrl: `${ROOT_URL}/auth/github/callback`,
       scopes: ['repo', 'user:email'],
-      log: { warn: (message) => console.log(message) },
+      log: { warn: (message) => logger.debug(message) },
     });
 
     req.session.githubAuthState = state;
@@ -117,7 +120,7 @@ function getAPI({ user, previews = [], request }) {
     request: { timeout: 10000 },
     log: {
       info(msg, info) {
-        console.log(`Github API log: ${msg}`, {
+        logger.debug(`Github API log: ${msg}`, {
           ..._.omit(info, 'headers', 'request', 'body'),
           user: _.pick(user, '_id', 'githubUsername', 'githubId'),
           ..._.pick(request, 'ip', 'hostname'),
